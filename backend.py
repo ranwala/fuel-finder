@@ -1,6 +1,8 @@
 import requests
 import urllib.parse
 
+location_url = 'https://ipinfo.io/json'
+
 def url_generator(lat, lng):
        params = {
               'lat': lat,
@@ -13,17 +15,27 @@ def url_generator(lat, lng):
        query = urllib.parse.urlencode(params)
        return f'https://creativecommons.tankerkoenig.de/json/list.php?{query}'
 
-location_url = 'https://ipinfo.io/json'
+def get_location(address):
+    url = 'https://eu1.locationiq.com/v1/search.php'
+    # encoded_address = urllib.parse.quote("Im Äuelchen 33, 53177 Bonn Germany")
+    params = {
+        'key': 'pk.3764a797567082a54713125597bc0271',
+        'q': address,
+        'format': 'json'
+    }
 
-def get_location():
-    location_response = requests.get(location_url)
-    data = location_response.json()
-    loc = data['loc']
-    lat, lng = loc.split(',')
-    return lat, lng
+    print(params)
+    response = requests.get(url, params=params)
+    data = response.json()
+    print(data)
+    first_item = next((item for item in data if 'lat' in item and 'lon' in item), None)
+    if first_item:
+        return first_item['lat'], first_item['lon']
+    else:
+        return None
 
-def get_gas_stations():
-    lat, lng = get_location()
+def get_gas_stations(address):
+    lat, lng = get_location(address)
     gas_station_url = url_generator(lat, lng)
     print(gas_station_url)
     response = requests.get(gas_station_url)
@@ -31,5 +43,4 @@ def get_gas_stations():
     return data['stations']
 
 if __name__ == '__main__':
-       stations = get_gas_stations()
-       print(stations)
+    print(get_gas_stations('wrong'))
