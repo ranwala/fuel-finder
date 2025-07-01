@@ -3,7 +3,6 @@ from backend import get_gas_stations
 
 @ui.page('/')
 def main_page():
-
     with ui.header(elevated=True).classes('py-2 bg-white text-black'):
         with ui.row().classes('items-center gap-1 px-4 lg:px-20 py-0'):
             ui.image('images/logo.png').classes('w-10 lg:w-16')
@@ -11,7 +10,7 @@ def main_page():
                 .classes('text-2xl md:text-4xl font-medium')
 
     with ui.column().classes('w-full items-center gap-4 px-4 lg:px-20 my-4'):
-        address_input = ui.input(placeholder='Enter your address') \
+        address_input = ui.input(placeholder='Enter your address or postal code with the country') \
             .props('rounded outlined dense') \
             .classes('w-full max-w-md')
         with address_input as i:
@@ -41,12 +40,11 @@ def main_page():
                             with ui.row().classes('items-center justify-between w-full'):
                                 with ui.column().classes('gap-1'):
                                     ui.label(station['name']).classes('font-bold text-lg')
-                                    ui.label(f'{station["street"]} {station["houseNumber"]}, {station["postCode"]} {station["place"]}') \
+                                    ui.label(f'{station["street"]} {station["houseNumber"]}, '
+                                             f'{station["postCode"]} {station["place"]}') \
                                         .classes('text-sm')
 
-                                ui.icon('navigation').classes(
-                                    'text-white bg-blue-400 rounded-full p-1 rotate-12'
-                                )
+                                ui.icon('navigation').classes('text-white bg-blue-400 rounded-full p-1 rotate-12')
 
                             with ui.column().classes('gap-1 mt-2'):
                                 ui.label(f'E5: {station["e5"]}')
@@ -60,6 +58,5 @@ def main_page():
 
     # Bind Enter key to trigger station search
     address_input.on('keydown.enter', lambda _:show_stations())
-
 
 ui.run()
