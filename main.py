@@ -9,7 +9,7 @@ def main_page():
             ui.label('Fuel Finder') \
                 .classes('text-2xl md:text-4xl font-medium')
 
-    with ui.column().classes('w-full items-center gap-4 px-4 lg:px-20 my-4'):
+    with ((ui.column().classes('w-full items-center gap-4 px-4 lg:px-20 my-4'))):
         address_input = ui.input(placeholder='Enter your address or postal code with the country') \
             .props('rounded outlined dense') \
             .classes('w-full max-w-md')
@@ -36,25 +36,30 @@ def main_page():
             with results_container:
                 with ui.row().classes('flex-wrap justify-center gap-4 px-4 lg:px-20 my-4'):
                     for station in stations:
-                        with ui.card().classes('w-full max-w-sm gap-1'):
+                        with ui.card().classes('w-full max-w-sm p-4 shadow-md rounded-2xl'):
                             with ui.row().classes('items-center justify-between w-full'):
-                                with ui.column().classes('gap-1'):
-                                    ui.label(station['name']).classes('font-bold text-lg')
-                                    ui.label(f'{station["street"]} {station["houseNumber"]}, '
+                                ui.label(station['name']) \
+                                    .tooltip(station['name']) \
+                                    .classes('text-lg font-bold truncate flex-1 mr-2')
+                                ui.label('Open' if station['isOpen'] else 'Closed') \
+                                    .classes(f'text-sm px-3 py-1 rounded-full shrink-0 '
+                                             f'{"bg-green-100 text-green-800" if station["isOpen"] else "bg-red-100 text-red-800"}')
+
+                            # Address
+                            ui.label(f'{station["street"]} {station["houseNumber"]}, '
                                              f'{station["postCode"]} {station["place"]}') \
-                                        .classes('text-sm')
+                                .tooltip(f'{station["street"]} {station["houseNumber"]}, '
+                                             f'{station["postCode"]} {station["place"]}') \
+                                .classes('text-sm text-gray-600 truncate w-full mt-1')
 
-                                ui.icon('navigation').classes('text-white bg-blue-400 rounded-full p-1 rotate-12')
-
-                            with ui.column().classes('gap-1 mt-2'):
-                                ui.label(f'E5: {station["e5"]}')
-                                ui.label(f'E10: {station["e10"]}')
-                                ui.label(f'Diesel: {station["diesel"]}')
-
-                            ui.separator().classes('mt-2 border-gray-500')
-
-                            open_status = 'Yes' if station['isOpen'] else 'No'
-                            ui.label(f'Open: {open_status}').classes('mt-2 text-xs')
+                            # Prices
+                            with ui.row().classes('justify-start gap-2 mt-3 flex-wrap'):
+                                ui.label(f'E5: {station["e5"]}') \
+                                    .classes('text-sm px-3 py-1 bg-gray-100 rounded-md')
+                                ui.label(f'E10: {station["e10"]}') \
+                                    .classes('text-sm px-3 py-1 bg-gray-100 rounded-md')
+                                ui.label(f'Diesel: {station["diesel"]}') \
+                                    .classes('text-sm px-3 py-1 bg-gray-100 rounded-md')
 
     # Bind Enter key to trigger station search
     address_input.on('keydown.enter', lambda _:show_stations())
