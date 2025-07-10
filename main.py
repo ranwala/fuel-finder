@@ -1,7 +1,7 @@
 from nicegui import ui
 from backend import get_gas_stations
 
-@ui.page('/')
+@ui.page('/', favicon='images/favicon.ico', title='Fuel Finder')
 def main_page():
     with ui.header(elevated=True).classes(
             'py-2 bg-gradient-to-r from-blue-50 via-white to-blue-50 text-black shadow-md'
