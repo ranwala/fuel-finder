@@ -1,3 +1,4 @@
+from click import style
 from nicegui import ui
 from backend import get_gas_stations
 
@@ -13,9 +14,11 @@ def main_page():
                 ui.label('Fuel Finder').classes('text-2xl md:text-4xl font-semibold text-blue-700')
 
     with ((ui.column().classes('w-full items-center gap-4 px-4 lg:px-20 my-4'))):
-        address_input = ui.input(placeholder='Enter your address or postal code with the country') \
+        address_input = ui.input(placeholder='Enter your address or postal code...') \
             .props('rounded outlined dense') \
-            .classes('w-full max-w-md')
+            .classes('w-full max-w-md') \
+            .style('font-size:16px;')
+
         with address_input as i:
             ui.button(color='primary', icon='search', on_click=lambda: show_stations()) \
                 .props('flat dense').bind_visibility_from(i, 'value')
@@ -66,5 +69,6 @@ def main_page():
 
     # Bind Enter key to trigger station search
     address_input.on('keydown.enter', lambda _:show_stations())
+    address_input.on('blur', lambda _: show_stations())
 
 ui.run()
