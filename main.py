@@ -17,7 +17,7 @@ def main_page():
             .props('rounded outlined dense') \
             .classes('w-full max-w-md')
         with address_input as i:
-            ui.button(color='red', on_click=lambda: i.set_value(None), icon='delete') \
+            ui.button(color='primary', icon='search', on_click=lambda: show_stations()) \
                 .props('flat dense').bind_visibility_from(i, 'value')
 
         # Dynamic container for results
