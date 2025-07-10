@@ -21,9 +21,10 @@ def url_generator(lat, lng):
 # Return the lat and lng
 def get_location(address):
     url = 'https://eu1.locationiq.com/v1/search.php'
+    country = 'Germany' if 'Germany' not in address else ''
     params = {
         'key': 'pk.3764a797567082a54713125597bc0271',
-        'q': address,
+        'q': f'{address} {country}',
         'format': 'json'
     }
 

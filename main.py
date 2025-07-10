@@ -3,11 +3,14 @@ from backend import get_gas_stations
 
 @ui.page('/')
 def main_page():
-    with ui.header(elevated=True).classes('py-2 bg-white text-black'):
-        with ui.row().classes('items-center gap-1 px-4 lg:px-20 py-0'):
-            ui.image('images/logo.png').classes('w-10 lg:w-16')
-            ui.label('Fuel Finder') \
-                .classes('text-2xl md:text-4xl font-medium')
+    with ui.header(elevated=True).classes(
+            'py-2 bg-gradient-to-r from-blue-50 via-white to-blue-50 text-black shadow-md'
+    ):
+        with ui.row().classes('items-center justify-between w-full px-4 lg:px-20'):
+            # Logo + Brand
+            with ui.row().classes('items-center gap-3'):
+                ui.image('images/logo.png').classes('w-10 lg:w-16')
+                ui.label('Fuel Finder').classes('text-2xl md:text-4xl font-semibold text-blue-700')
 
     with ((ui.column().classes('w-full items-center gap-4 px-4 lg:px-20 my-4'))):
         address_input = ui.input(placeholder='Enter your address or postal code with the country') \
