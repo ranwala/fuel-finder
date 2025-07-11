@@ -33,11 +33,12 @@ def main_page():
 
             stations = get_gas_stations(address_input.value)
 
-            if not stations:
-                ui.label('No gas stations, please check the address!')
-                return
-
             results_container.clear()
+
+            if not stations:
+                with results_container:
+                    ui.label('No gas stations, please check the address!')
+                return
 
             with results_container:
                 with ui.row().classes('flex-wrap justify-center gap-4 px-4 lg:px-20 my-4'):
